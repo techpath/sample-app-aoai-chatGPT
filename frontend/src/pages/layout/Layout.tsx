@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
-import { Link, Outlet } from 'react-router-dom'
-import { Dialog, Stack, TextField } from '@fluentui/react'
+import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Dialog, Stack, TextField, PrimaryButton } from '@fluentui/react'
 import { CopyRegular } from '@fluentui/react-icons'
 
 import { CosmosDBStatus } from '../../api'
@@ -21,23 +21,45 @@ const Layout = () => {
   const appStateContext = useContext(AppStateContext)
   const ui = appStateContext?.state.frontendSettings?.ui
 
-  const handleShareClick = () => {
-    setIsSharePanelOpen(true)
-  }
-
-  const handleSharePanelDismiss = () => {
-    setIsSharePanelOpen(false)
-    setCopyClicked(false)
-    setCopyText('Copy URL')
-  }
-
-  const handleCopyClick = () => {
-    navigator.clipboard.writeText(window.location.href)
-    setCopyClicked(true)
-  }
-
-  const handleHistoryClick = () => {
-    appStateContext?.dispatch({ type: 'TOGGLE_CHAT_HISTORY' })
+  const location = useLocation()
+  
+  // Function to handle the OpenAI API call
+  const handleOpenAIClick = async () => {
+    const urlParams = new URLSearchParams(location.search)
+    const ticketNumber = urlParams.get('ticket')
+    
+    if (!ticketNumber) {
+      alert('Ticket number is missing from the URL.')
+      return
+    }
+    
+    const customPrompt = `This is a custom prompt with ticket number: ${ticketNumber}`
+    
+    try {
+      const response = await fetch('https://api.openai.com/v1/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer YOUR_OPENAI_API_KEY`, // Replace with your actual API key
+        },
+        body: JSON.stringify({
+          model: 'text-davinci-003', // Replace with your desired model
+          prompt: customPrompt,
+          max_tokens: 150,
+        }),
+      })
+      
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.statusText}`)
+      }
+      
+      const data = await response.json()
+      console.log('OpenAI Response:', data.choices[0]?.text)
+      alert(`OpenAI Response: ${data.choices[0]?.text}`)
+    } catch (error) {
+      console.error('Error calling OpenAI API:', error)
+      alert('Failed to fetch response from OpenAI API.')
+    }
   }
 
   useEffect(() => {
@@ -51,8 +73,6 @@ const Layout = () => {
       setCopyText('Copied URL')
     }
   }, [copyClicked])
-
-  useEffect(() => { }, [appStateContext?.state.isCosmosDBAvailable.status])
 
   useEffect(() => {
     const handleResize = () => {
@@ -91,6 +111,8 @@ const Layout = () => {
               />
             )}
             {ui?.show_share_button && <ShareButton onClick={handleShareClick} text={shareLabel} />}
+            {/* New OpenAI Button */}
+            <PrimaryButton text="Call OpenAI" onClick={handleOpenAIClick} />
           </Stack>
         </Stack>
       </header>
