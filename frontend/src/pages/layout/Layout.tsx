@@ -111,8 +111,6 @@ const Layout = () => {
               />
             )}
             {ui?.show_share_button && <ShareButton onClick={handleShareClick} text={shareLabel} />}
-            {/* New OpenAI Button */}
-            <PrimaryButton text="Call OpenAI" onClick={handleOpenAIClick} />
           </Stack>
         </Stack>
       </header>
@@ -141,6 +139,8 @@ const Layout = () => {
           showCloseButton: true
         }}>
         <Stack horizontal verticalAlign="center" style={{ gap: '8px' }}>
+          {/* New OpenAI Button */}
+            <PrimaryButton text="Call OpenAI" onClick={handleOpenAIClick} />
           <TextField className={styles.urlTextBox} defaultValue={window.location.href} readOnly />
           <div
             className={styles.copyButtonContainer}
