@@ -110,39 +110,3 @@
   }
 }
 
-/* Primary Button Custom Styles */
-.primaryButton {
-  background-color: #0078d4; /* Default Fluent UI Primary color */
-  color: #ffffff; /* Text color */
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-  padding: 8px 16px; /* Space inside the button */
-  border: none; /* Remove border */
-  border-radius: 4px; /* Rounded corners */
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.primaryButton:hover {
-  background-color: #005a9e; /* Darker shade for hover effect */
-}
-
-.primaryButton:active {
-  background-color: #004578; /* Even darker shade for active state */
-}
-
-.primaryButton:focus {
-  outline: 2px solid #cce1ff; /* Focus outline */
-  outline-offset: 2px;
-}
-
-.primaryButton:disabled {
-  background-color: #d1d1d1; /* Disabled background */
-  color: #707070; /* Disabled text */
-  cursor: not-allowed;
-}
-
