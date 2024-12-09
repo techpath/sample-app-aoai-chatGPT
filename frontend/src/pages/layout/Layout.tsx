@@ -18,6 +18,7 @@ const Layout = () => {
   const [hideHistoryLabel, setHideHistoryLabel] = useState<string>('Hide chat history')
   const [showHistoryLabel, setShowHistoryLabel] = useState<string>('Show chat history')
   const [logo, setLogo] = useState('')
+
   const appStateContext = useContext(AppStateContext)
   const ui = appStateContext?.state.frontendSettings?.ui
 
@@ -94,6 +95,12 @@ const Layout = () => {
           </Stack>
         </Stack>
       </header>
+
+      {/* Output Hollow World text */}
+      <div style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', marginTop: '20px' }}>
+        Hollow World
+      </div>
+
       <Outlet />
       <Dialog
         onDismiss={handleSharePanelDismiss}
